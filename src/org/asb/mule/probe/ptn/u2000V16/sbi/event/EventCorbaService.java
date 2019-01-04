@@ -55,6 +55,20 @@ public class EventCorbaService extends CorbaSbiService {
 		return true;
 
 	}
+	
+	public boolean initFake() {
+		if (!initlog) {
+			initLog();
+		}
+
+		eventlog.info("corbaService init fake");
+		setConnectState(true);
+		eventlog.info("collect data as debug after init");
+
+		// DayMigrationJob job=new DayMigrationJob();
+		// job.execute(null);
+		return true;
+	}
 
 	public void linkFailure() {
 		try {
@@ -76,8 +90,8 @@ public class EventCorbaService extends CorbaSbiService {
 	}
 
 	/**
-	 * ºËÐÄ·½·¨
-	 * 1.Á¬½Ó³§ÉÌÍø¹Ü
+	 * ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½
+	 * 1.ï¿½ï¿½ï¿½Ó³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	public boolean connect() {
 		eventlog.info(getCorbaTree());
@@ -138,7 +152,7 @@ public class EventCorbaService extends CorbaSbiService {
 
 			eventlog.info("connect>>	active _nmsSession successfully");
 
-			// 6. login by EmsSessionFactory_I,¿ªÊ¼µ÷ÓÃCORBA·þÎñÆ÷¶ËµÄ'getEmsSession'·½·¨"
+			// 6. login by EmsSessionFactory_I,ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½CORBAï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½'getEmsSession'ï¿½ï¿½ï¿½ï¿½"
 			EmsSession_IHolder emsSessionHolder = new EmsSession_IHolder();
 			_emsSessionFactory.getEmsSession(getCorbaUserName(), getCorbaPassword(), nmsSession_I, emsSessionHolder);
 
@@ -156,7 +170,7 @@ public class EventCorbaService extends CorbaSbiService {
 			}
 			String emsVersionInfo = _emsSessionFactory.getVersion();
 			eventlog.info("**********************************************");
-			eventlog.info("CORBA ·þÎñÆ÷°æ±¾ÐÅÏ¢:" + emsVersionInfo);
+			eventlog.info("CORBA ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ±¾ï¿½ï¿½Ï¢:" + emsVersionInfo);
 			eventlog.info("**********************************************");
 
 			nmsSession.getsupportedManagers();
@@ -192,7 +206,7 @@ public class EventCorbaService extends CorbaSbiService {
 
 	}
 
-	// ¼à²âÁ¬½Ó
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	private void startHB() {
 		if (timer == null) {
 			timer = new Timer("HeartBeat-" + getEmsName());
@@ -203,8 +217,8 @@ public class EventCorbaService extends CorbaSbiService {
 	}
 
 	/**
-	 * ºËÐÄ·½·¨
-	 * 2.¶Ï¿ª³§ÉÌÍø¹Ü
+	 * ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½
+	 * 2.ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	public boolean disconnect() {
 		try {
