@@ -31,7 +31,7 @@ public class ManagedElementMapper extends CommonMapper
 		ne.setNativeEMSName(CodeTool.isoToGbk(vendorEntity.nativeEMSName));
 		ne.setUserLabel(CodeTool.isoToGbk(vendorEntity.userLabel));
 		ne.setNeVersion(vendorEntity.version);
-		ne.setLocation(vendorEntity.location);
+		ne.setLocation(CodeTool.isoToGbk(vendorEntity.location));
 		ne.setProductName(CodeTool.isoToGbk(vendorEntity.productName));
 		ne.setCommunicationState(mapperCommunicationState(vendorEntity.communicationState));
 		ne.setEmsInSyncState(vendorEntity.emsInSyncState);
