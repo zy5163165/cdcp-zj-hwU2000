@@ -381,6 +381,8 @@ public class DayMigrationJob extends MigrateCommonJob implements CommandBean {
 		// uploadFile("PTN","HW","HZ",new File("d:\\work\\nohup.rar2"));
 		// System.out.println("finish = " );
 		try {
+			CodeTool.IsoToUtf8("��ô��� ");
+			CodeTool.isoToGbk("»ñµÃ´íÎó");
 			FtpUtil.uploadFile("PTN", "HUAWEI", "test", new File("C:\\Users\\X\\Desktop\\cdcp\\alu\\tmf3.5_idl.zip"));
 		} catch (Exception e) {
 			e.printStackTrace();

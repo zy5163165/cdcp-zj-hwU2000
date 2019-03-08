@@ -341,9 +341,9 @@ public class U2000Service implements NbiService {
 			vendorPtpList = ManagedElementMgrHandler.instance().retrieveAllPTPs(corbaService.getNmsSession().getManagedElementMgr(), neDn, tpLayerRateList,
 					connectionLayerRateList);
 		} catch (ProcessingFailureException e) {
-			errorlog.error("retrieveAllPtps ProcessingFailureException: " + (e.errorReason)+"_"+CodeTool.isoToGbk(e.errorReason), e);
+			errorlog.error("retrieveAllPtps ProcessingFailureException: " + (e.errorReason) + "_" + neName+"_"+CodeTool.isoToGbk(e.errorReason), e);
 		} catch (org.omg.CORBA.SystemException e) {
-			errorlog.error("retrieveAllPtps CORBA.SystemException: " + e.getMessage(), e);
+			errorlog.error("retrieveAllPtps CORBA.SystemException: " + e.getMessage() + "_" + neName, e);
 		}
 		// for (TerminationPoint_T ptp : vendorPtpList) {
 		// sbilog.info("PTP : " + ptp);
@@ -354,11 +354,11 @@ public class U2000Service implements NbiService {
 					PTP ptp = PtpMapper.instance().convertPtp(vendorPtp, neName);
 					ptpList.add(ptp);
 				} catch (Exception e) {
-					errorlog.error("retrieveAllPtps convertException: ", e);
+					errorlog.error("retrieveAllPtps convertException: " + "_" + neName, e);
 				}
 			}
 		}
-		sbilog.info("retrieveAllPtps : " + ptpList.size());
+		sbilog.info("retrieveAllPtps : " + neName + "_" + ptpList.size());
 		// try {
 		// ptpList.addAll(retrieveAllMSTPPtps(neDn));
 		// } catch (ProcessingFailureException e) {
