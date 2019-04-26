@@ -31,22 +31,22 @@ public class TrafficTrunkAndCrossConnectionAndSectionDataTask extends CommonData
 			Map<String, R_TrafficTrunk_CC_Section> relationList = new HashMap<String, R_TrafficTrunk_CC_Section>();
 			for (IPCrossconnection cc : ccList) {
 				// 1.mapper IPCrossconnection to R_TrafficTrunk_CC_Section
-				if (cc.getNativeEMSName().equals(tunnelName)) {
-					//Route����Ҫ��
-					//R_TrafficTrunk_CC_Section relation = CCToRelation(cc, TYPECC);
-					//relationList.put(relation.getCcOrSectionDn(), relation);
-					// 2.get related section by CC aend
-					Section secA = tpSectionMap.get(cc.getaPtp());
-					if (secA != null) {
-						R_TrafficTrunk_CC_Section relationA = SectionToRelation(secA, TYPESECTION);
-						relationList.put(relationA.getCcOrSectionDn(), relationA);
-					}
-					// 3.get related section by CC zend
-					Section secZ = tpSectionMap.get(cc.getzPtp());
-					if (secZ != null) {
-						R_TrafficTrunk_CC_Section relationZ = SectionToRelation(secZ, TYPESECTION);
-						relationList.put(relationZ.getCcOrSectionDn(), relationZ);
-					}
+				Section secA = tpSectionMap.get(cc.getaPtp());
+				if (secA != null) {
+					R_TrafficTrunk_CC_Section relationA = SectionToRelation(secA, TYPESECTION);
+					relationList.put(relationA.getCcOrSectionDn(), relationA);
+				} else {
+					nbilog.info("secA:"+cc.getaPtp());
+				}
+				Section secZ = tpSectionMap.get(cc.getzPtp());
+				if (secZ != null) {
+					R_TrafficTrunk_CC_Section relationZ = SectionToRelation(secZ, TYPESECTION);
+					relationList.put(relationZ.getCcOrSectionDn(), relationZ);
+				} else {
+					nbilog.info("secZ:"+cc.getzPtp());
+				}
+				if (!cc.getNativeEMSName().equals(tunnelName)) {
+					nbilog.info("tunnelName:"+tunnelName);
 				}
 			}
 
