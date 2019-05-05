@@ -3,6 +3,7 @@ package org.asb.mule.probe.ptn.u2000V16.nbi.job;
 import java.io.File;
 import java.util.*;
 
+import org.apache.commons.lang.StringUtils;
 import org.asb.mule.probe.framework.CommandBean;
 import org.asb.mule.probe.framework.entity.EDS_PTN;
 import org.asb.mule.probe.framework.entity.ManagedElement;
@@ -367,7 +368,8 @@ public class DayMigrationJob extends MigrateCommonJob implements CommandBean {
 			// name =
 			// CodeTool.getDatetime()+"-"+service.getEmsName()+"-DayMigration";
 
-			name = CodeTool.getDatetimeStr() + "-" + service.getEmsName() + "-DayMigration";
+			String replacedEmsName = StringUtils.replace(service.getEmsName(), "/", "-");
+			name = CodeTool.getDatetimeStr() + "-" + replacedEmsName + "-DayMigration";
 		}
 		return name;
 	}
