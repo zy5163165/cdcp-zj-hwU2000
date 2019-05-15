@@ -35,18 +35,11 @@ public class TrafficTrunkAndCrossConnectionAndSectionDataTask extends CommonData
 				if (secA != null) {
 					R_TrafficTrunk_CC_Section relationA = SectionToRelation(secA, TYPESECTION);
 					relationList.put(relationA.getCcOrSectionDn(), relationA);
-				} else {
-					nbilog.info("secA:"+cc.getaPtp());
 				}
 				Section secZ = tpSectionMap.get(cc.getzPtp());
 				if (secZ != null) {
 					R_TrafficTrunk_CC_Section relationZ = SectionToRelation(secZ, TYPESECTION);
 					relationList.put(relationZ.getCcOrSectionDn(), relationZ);
-				} else {
-					nbilog.info("secZ:"+cc.getzPtp());
-				}
-				if (!cc.getNativeEMSName().equals(tunnelName)) {
-					nbilog.info("tunnelName:"+tunnelName);
 				}
 			}
 
