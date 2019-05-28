@@ -47,11 +47,11 @@ public class DayMigrationJob extends MigrateCommonJob implements CommandBean {
 	@Override
 	public void execute(JobExecutionContext arg0) {
 		// nbilog = new FileLogger(service.getEmsName() + "/nbi.log");
-		int multiThreadPoolSize = 8;
+		int multiThreadPoolSize = 6;
 		//if (serial.contains(""))
 		nbilog = ((U2000Service) service).getCorbaService().getNbilog();
 		//
-		nbilog.info("优化8线程");
+		nbilog.info("优化6线程");
 		if (!service.getConnectState()) {
 			nbilog.error(">>>EMS is disconnect.");
 			try {
