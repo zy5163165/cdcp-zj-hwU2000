@@ -1,32 +1,44 @@
 package org.asb.mule.probe.ptn.u2000V16.nbi.job;
 
 import java.io.File;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.Vector;
 
-import com.alcatelsbell.cdcp.domain.SummaryUtil;
-import com.alcatelsbell.cdcp.nodefx.FtpInfo;
-import com.alcatelsbell.cdcp.nodefx.MessageUtil;
-import com.alcatelsbell.cdcp.nodefx.NodeContext;
-import com.alcatelsbell.nms.util.ObjectUtil;
-import com.alcatelsbell.nms.util.SysProperty;
 import org.apache.log4j.Logger;
 import org.asb.mule.probe.framework.CommandBean;
-import org.asb.mule.probe.framework.entity.*;
+import org.asb.mule.probe.framework.entity.EDS_PTN;
+import org.asb.mule.probe.framework.entity.Section;
 import org.asb.mule.probe.framework.nbi.job.MigrateCommonJob;
 import org.asb.mule.probe.framework.nbi.task.DataTask;
 import org.asb.mule.probe.framework.nbi.task.TaskPoolExecutor;
 import org.asb.mule.probe.framework.nbi.task.TaskResultHandler;
-
 import org.asb.mule.probe.framework.service.SqliteConn;
 import org.asb.mule.probe.framework.util.CodeTool;
 import org.asb.mule.probe.framework.util.FileLogger;
-import org.asb.mule.probe.ptn.u2000V16.nbi.task.*;
+import org.asb.mule.probe.ptn.u2000V16.nbi.task.AlarmDataTask;
+import org.asb.mule.probe.ptn.u2000V16.nbi.task.ELLDataTask;
+import org.asb.mule.probe.ptn.u2000V16.nbi.task.HW_MSTPDataTask;
+import org.asb.mule.probe.ptn.u2000V16.nbi.task.ManagedElementDataTask;
+import org.asb.mule.probe.ptn.u2000V16.nbi.task.PhysicalDataTask;
+import org.asb.mule.probe.ptn.u2000V16.nbi.task.SNCAndCCAndSectionDataTask;
+import org.asb.mule.probe.ptn.u2000V16.nbi.task.SNCDataTask;
+import org.asb.mule.probe.ptn.u2000V16.nbi.task.SectionDataTask;
+import org.asb.mule.probe.ptn.u2000V16.nbi.task.SubnetworkProtectionDataTask;
 import org.asb.mule.probe.ptn.u2000V16.service.U2000Service;
 import org.quartz.JobExecutionContext;
 
+import com.alcatelsbell.cdcp.domain.SummaryUtil;
+import com.alcatelsbell.cdcp.nodefx.FtpInfo;
 import com.alcatelsbell.cdcp.nodefx.FtpUtil;
+import com.alcatelsbell.cdcp.nodefx.MessageUtil;
+import com.alcatelsbell.cdcp.nodefx.NodeContext;
 import com.alcatelsbell.nms.db.components.service.JPASupport;
 import com.alcatelsbell.nms.db.components.service.JPAUtil;
+import com.alcatelsbell.nms.util.ObjectUtil;
+import com.alcatelsbell.nms.util.SysProperty;
 import com.alcatelsbell.nms.valueobject.BObject;
 
 public class DayMigrationJob4SDH extends MigrateCommonJob implements CommandBean {
@@ -81,6 +93,19 @@ public class DayMigrationJob4SDH extends MigrateCommonJob implements CommandBean
             sqliteConn.setDataPath(dbName);
             sqliteConn.init();
 
+            /*-尝试采集告警start-*/
+            try {
+                nbilog.info("getAlarmTest");
+                AlarmDataTask alarmDataTask = new AlarmDataTask();
+                alarmDataTask.setSqliteConn(sqliteConn);
+                alarmDataTask.CreateTask(service, getJobName(), service.getEmsName(), nbilog);
+                alarmDataTask.excute();
+                nbilog.info("getAlarmTest finish");
+            } catch (Throwable e) {
+                nbilog.error(e,e);
+            }
+            /*-尝试采集告警end-*/
+            
             if (!emstype.equals(EMS_TYPE_PTN)) {
                 try {
                     nbilog.info("getAllProtectionSubnetworks");

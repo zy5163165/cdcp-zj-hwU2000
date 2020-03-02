@@ -1,22 +1,18 @@
 package org.asb.mule.probe.ptn.u2000V16.service;
 
-import com.alcatelsbell.cdcp.nodefx.exception.EmsDataIllegalException;
-import com.alcatelsbell.cdcp.nodefx.exception.EmsFunctionInvokeException;
-import com.alcatelsbell.nms.util.ObjectUtil;
-import emsMgr.EMS_THolder;
-import encapsulationLayerLink.EncapsulationLayerLink_T;
-import equipment.EquipmentHolder_T;
-import equipment.EquipmentOrHolder_T;
-import equipment.EquipmentTypeQualifier_T;
-import equipment.Equipment_T;
-import globaldefs.NameAndStringValue_T;
-import globaldefs.ProcessingFailureException;
-
 import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
-import managedElement.ManagedElement_T;
-
+import org.asb.mule.probe.framework.entity.AlarmModel;
 import org.asb.mule.probe.framework.entity.CTP;
 import org.asb.mule.probe.framework.entity.CrossConnect;
 import org.asb.mule.probe.framework.entity.EncapsulationLayerLink;
@@ -59,7 +55,7 @@ import org.asb.mule.probe.ptn.u2000V16.sbi.mgrhandler.SubnetworkMgrHandler;
 import org.asb.mule.probe.ptn.u2000V16.sbi.mgrhandler.TopoMgrHandler;
 import org.asb.mule.probe.ptn.u2000V16.sbi.mgrhandler.VpnMgrHandler;
 import org.asb.mule.probe.ptn.u2000V16.sbi.service.CorbaService;
-import org.asb.mule.probe.ptn.u2000V16.service.mapper.ConvertorHelper;
+import org.asb.mule.probe.ptn.u2000V16.service.mapper.AlarmMapper;
 import org.asb.mule.probe.ptn.u2000V16.service.mapper.CtpMapper;
 import org.asb.mule.probe.ptn.u2000V16.service.mapper.EquipmentHolderMapper;
 import org.asb.mule.probe.ptn.u2000V16.service.mapper.EquipmentMapper;
@@ -74,14 +70,12 @@ import org.asb.mule.probe.ptn.u2000V16.service.mapper.SubnetworkConnectionMapper
 import org.asb.mule.probe.ptn.u2000V16.service.mapper.TopoNodeMapper;
 import org.asb.mule.probe.ptn.u2000V16.service.mapper.TrafficTrunkMapper;
 import org.asb.mule.probe.ptn.u2000V16.service.mapper.VendorDNFactory;
+import org.omg.CosNotification.StructuredEvent;
 
-import performance.*;
-import subnetworkConnection.CrossConnect_T;
-import subnetworkConnection.SubnetworkConnection_T;
-import subnetworkConnection.TPData_T;
-import terminationPoint.TerminationPoint_T;
-import topologicalLink.TopologicalLink_T;
-import trailNtwProtection.TrailNtwProtection_T;
+import com.alcatelsbell.cdcp.nodefx.exception.EmsDataIllegalException;
+import com.alcatelsbell.cdcp.nodefx.exception.EmsFunctionInvokeException;
+import com.alcatelsbell.nms.util.ObjectUtil;
+
 import HW_mstpInventory.HW_MSTPBindingPath_T;
 import HW_mstpInventory.HW_MSTPEndPoint_T;
 import HW_mstpInventory.HW_VirtualBridge_T;
@@ -93,6 +87,30 @@ import HW_vpnManager.IPCrossConnection_T;
 import HW_vpnManager.MatrixFlowDomainFragment_T;
 import HW_vpnManager.TrafficTrunk_T;
 import TopoManagementManager.Node_T;
+import emsMgr.EMS_THolder;
+import encapsulationLayerLink.EncapsulationLayerLink_T;
+import equipment.EquipmentHolder_T;
+import equipment.EquipmentOrHolder_T;
+import equipment.EquipmentTypeQualifier_T;
+import equipment.Equipment_T;
+import globaldefs.NameAndStringValue_T;
+import globaldefs.ProcessingFailureException;
+import managedElement.ManagedElement_T;
+import notifications.PerceivedSeverity_T;
+import performance.PMDataIterator_IHolder;
+import performance.PMDataList_THolder;
+import performance.PMData_T;
+import performance.PMMeasurement_T;
+import performance.PMParameterList_THolder;
+import performance.PMParameter_T;
+import performance.PMTPSelect_T;
+import performance.PerformanceManagementMgr_I;
+import subnetworkConnection.CrossConnect_T;
+import subnetworkConnection.SubnetworkConnection_T;
+import subnetworkConnection.TPData_T;
+import terminationPoint.TerminationPoint_T;
+import topologicalLink.TopologicalLink_T;
+import trailNtwProtection.TrailNtwProtection_T;
 
 public class U2000Service implements NbiService {
 
@@ -1173,6 +1191,33 @@ public class U2000Service implements NbiService {
 		}
 		sbilog.info("retrieveAllSNCs : " + sncList.size());
 		return sncList;
+	}
+	
+	/**
+	 * 20200302 采集历史告警
+	 * @return
+	 */
+	public List<AlarmModel> retrieveAllAlarms() {
+		List<AlarmModel> alarmList = new ArrayList<AlarmModel>();
+		StructuredEvent[] alarms = null;
+		try {
+			alarms = EMSMgrHandler.instance().retrieveAllActiveAlarms(corbaService.getNmsSession().getEmsMgr(), new String[0], new PerceivedSeverity_T[0]);
+		} catch (ProcessingFailureException e) {
+			errorlog.error("retrieveAllAlarms ProcessingFailureException: " + CodeTool.isoToGbk(e.errorReason), e);
+		} catch (org.omg.CORBA.SystemException e) {
+			errorlog.error("retrieveAllAlarms CORBA.SystemException: " + e.getMessage(), e);
+		}
+		if (alarms != null) {
+			for (StructuredEvent alarm : alarms) {
+				try {
+					alarmList.add(AlarmMapper.instance().convertAlarm(alarm, alarm.filterable_data));
+				} catch (Exception e) {
+					errorlog.error("retrieveAllAlarms convertException: ", e);
+				}
+			}
+		}
+		sbilog.info("retrieveAllAlarms : " + alarmList.size());
+		return alarmList;
 	}
 
 	public void retrieveRouteAndTopologicalLinks(String sncName, List<CrossConnect> ccList, List<Section> sectionList) {
