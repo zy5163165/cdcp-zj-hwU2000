@@ -2,9 +2,6 @@ package org.asb.mule.probe.ptn.u2000V16.sbi.event;
 
 import java.util.Timer;
 
-import nmsSession.NmsSession_I;
-import nmsSession.NmsSession_IHelper;
-
 import org.asb.mule.probe.framework.service.CorbaSbiService;
 import org.asb.mule.probe.framework.util.CodeTool;
 import org.asb.mule.probe.framework.util.FileLogger;
@@ -21,6 +18,8 @@ import emsSession.EmsSession_IHolder;
 import emsSessionFactory.EmsSessionFactory_I;
 import emsSessionFactory.EmsSessionFactory_IHelper;
 import globaldefs.ProcessingFailureException;
+import nmsSession.NmsSession_I;
+import nmsSession.NmsSession_IHelper;
 
 public class EventCorbaService extends CorbaSbiService {
 
@@ -108,7 +107,7 @@ public class EventCorbaService extends CorbaSbiService {
 
 		try {
 			// 2.connect vendor nameService
-			eventlog.info("connect>>	vendor NameService URL = " + getCorbaUrl());
+			eventlog.info("EventCorbaService-connect>>	vendor NameService URL = " + getCorbaUrl());
 			Object string_to_object = orb.string_to_object(getCorbaUrl());
 			NamingContextExt ns = NamingContextExtHelper.narrow(string_to_object);
 			// 3. get EmsSessionFactory_I

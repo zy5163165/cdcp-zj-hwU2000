@@ -2,17 +2,10 @@ package org.asb.mule.probe.ptn.u2000V16.sbi.service;
 
 import java.util.Timer;
 
-import com.alcatelsbell.cdcp.nodefx.NodeContext;
-import com.alcatelsbell.cdcp.nodefx.exception.EmsConnectionFailureException;
-import com.alcatelsbell.nms.util.SysProperty;
-import nmsSession.NmsSession_I;
-import nmsSession.NmsSession_IHelper;
-
 import org.asb.mule.probe.framework.service.CorbaSbiService;
 import org.asb.mule.probe.framework.util.CodeTool;
 import org.asb.mule.probe.framework.util.FileLogger;
 import org.asb.mule.probe.framework.util.corba.CorbaMgr;
-import org.asb.mule.probe.ptn.u2000V16.sbi.HeartBeat;
 import org.asb.mule.probe.ptn.u2000V16.sbi.NmsSession;
 import org.omg.CORBA.Object;
 import org.omg.CosNaming.NamingContextExt;
@@ -20,7 +13,9 @@ import org.omg.CosNaming.NamingContextExtHelper;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
 
-import com.alcatelsbell.cdcp.nodefx.MessageUtil;
+import com.alcatelsbell.cdcp.nodefx.NodeContext;
+import com.alcatelsbell.cdcp.nodefx.exception.EmsConnectionFailureException;
+import com.alcatelsbell.nms.util.SysProperty;
 
 import emsMgr.EMS_THolder;
 import emsSession.EmsSession_I;
@@ -28,6 +23,8 @@ import emsSession.EmsSession_IHolder;
 import emsSessionFactory.EmsSessionFactory_I;
 import emsSessionFactory.EmsSessionFactory_IHelper;
 import globaldefs.ProcessingFailureException;
+import nmsSession.NmsSession_I;
+import nmsSession.NmsSession_IHelper;
 
 public class CorbaService extends CorbaSbiService {
 
@@ -130,7 +127,7 @@ public class CorbaService extends CorbaSbiService {
 
 		try {
 			// 2.connect vendor nameService
-			sbilog.info("connect>>	vendor NameService URL = " + getCorbaUrl());
+			sbilog.info("CorbaService-connect>>	vendor NameService URL = " + getCorbaUrl());
 			Object string_to_object = orb.string_to_object(getCorbaUrl());
 			sbilog.info("string_to_object = "+string_to_object);
 			EmsSessionFactory_I _emsSessionFactory = null;
@@ -232,6 +229,8 @@ public class CorbaService extends CorbaSbiService {
                 sbilog.info("startListenAlarm>>	failed.");
                 }
 
+            } else {
+            	sbilog.info("");
             }
 
 

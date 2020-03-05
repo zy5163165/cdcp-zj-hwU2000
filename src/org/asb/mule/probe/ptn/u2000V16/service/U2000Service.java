@@ -1210,6 +1210,7 @@ public class U2000Service implements NbiService {
 		if (alarms != null) {
 			for (StructuredEvent alarm : alarms) {
 				try {
+//					sbilog.info("retrieveAllAlarms" + ALHelper.getNamingAttributesValue(alarm.filterable_data, "objectName"));
 					alarmList.add(AlarmMapper.instance().convertAlarm(alarm, alarm.filterable_data));
 				} catch (Exception e) {
 					errorlog.error("retrieveAllAlarms convertException: ", e);

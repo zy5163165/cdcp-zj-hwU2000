@@ -56,7 +56,7 @@ public class AlarmMapper extends CommonMapper
 		// 转化系统标示
 		String emsName = objectName[0].value;
 		// 转化网元标示
-		String neName = objectName[1].value;
+		String neName = objectName[0].value;
 		// 初始化资源名称
 		StringBuffer sb = new StringBuffer();
 		// 网管资源
