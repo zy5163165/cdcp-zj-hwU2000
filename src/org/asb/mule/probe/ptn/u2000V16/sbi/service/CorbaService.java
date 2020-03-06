@@ -230,7 +230,7 @@ public class CorbaService extends CorbaSbiService {
                 }
 
             } else {
-            	sbilog.info("");
+            	sbilog.info("cdcp.sbi.event" + SysProperty.getString("cdcp.sbi.event",""));
             }
 
 
