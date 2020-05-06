@@ -9,22 +9,20 @@
  */
 package org.asb.mule.probe.ptn.u2000V16;
 
-import java.util.*;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.Map;
 
-import com.alcatelsbell.cdcp.nodefx.*;
 import org.apache.log4j.Logger;
-import org.asb.mule.probe.framework.entity.DeviceInfo;
-import org.asb.mule.probe.framework.entity.ManagedElement;
 import org.asb.mule.probe.framework.service.CorbaSbiService;
 import org.asb.mule.probe.framework.service.NbiService;
-import org.asb.mule.probe.framework.util.CodeTool;
 import org.asb.mule.probe.ptn.u2000V16.nbi.job.DayMigrationJob;
 import org.asb.mule.probe.ptn.u2000V16.nbi.job.DayMigrationJob4SDH;
+import org.asb.mule.probe.ptn.u2000V16.nbi.job.DayMigrationJob4SPN;
 import org.asb.mule.probe.ptn.u2000V16.nbi.job.DeviceJob;
 import org.asb.mule.probe.ptn.u2000V16.sbi.service.CorbaService;
 import org.asb.mule.probe.ptn.u2000V16.service.U2000Service;
 
+import com.alcatelsbell.cdcp.nodefx.CorbaEmsAdapterTemplate;
+import com.alcatelsbell.cdcp.nodefx.NodeContext;
 import com.alcatelsbell.nms.valueobject.sys.Ems;
 
 /**
@@ -76,6 +74,14 @@ public class HWU2000EmsAdapterV2 extends CorbaEmsAdapterTemplate {
                     job.setService(u2000Service);
                     job.setSerial(_serial);
                     job.execute();
+                }
+                // omc新接口SPN
+                else if (ems.getTag1().equals("NewSPN")) {
+                	DayMigrationJob4SPN job = new DayMigrationJob4SPN();
+                	job.logical = logical;
+                	job.setService(u2000Service);
+                	job.setSerial(_serial);
+                	job.execute();
                 }
                 else {
                     DayMigrationJob job = new DayMigrationJob();
