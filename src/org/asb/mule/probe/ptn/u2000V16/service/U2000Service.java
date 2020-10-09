@@ -853,12 +853,12 @@ public class U2000Service implements NbiService {
 			try {
 				vendorTrafficTrunk = VpnMgrHandler.instance().retrieveTrafficTrunk(corbaService.getNmsSession().getVpnMgr(), trafficTrunkName);
 			} catch (ProcessingFailureException e1) {
-				errorlog.error("retrievePWTrail1 ProcessingFailureException: " + CodeTool.isoToGbk(e1.errorReason), e1);
+				errorlog.error("retrievePWTrail1 ProcessingFailureException: " + CodeTool.isoToGbk(e1.errorReason) + "::" + rafficTrunkName, e1);
 			} catch (org.omg.CORBA.SystemException e1) {
-				errorlog.error("retrievePWTrail1 CORBA.SystemException: " + e1.getMessage(), e1);
+				errorlog.error("retrievePWTrail1 CORBA.SystemException: " + e1.getMessage() + "::" + rafficTrunkName, e1);
 			}
 		} catch (org.omg.CORBA.SystemException e) {
-			errorlog.error("retrievePWTrail CORBA.SystemException: " + e.getMessage(), e);
+			errorlog.error("retrievePWTrail CORBA.SystemException: " + e.getMessage() + "::" + rafficTrunkName, e);
 		}
 		PWTrail traffic = null;
 		if (vendorTrafficTrunk != null) {
