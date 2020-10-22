@@ -1,10 +1,5 @@
 package org.asb.mule.probe.ptn.u2000V16.sbi.mgrhandler;
 
-import globaldefs.NameAndStringValue_T;
-import globaldefs.NamingAttributesIterator_IHolder;
-import globaldefs.NamingAttributesList_THolder;
-import globaldefs.ProcessingFailureException;
-
 import java.util.Vector;
 
 import org.asb.mule.probe.framework.util.CodeTool;
@@ -23,6 +18,10 @@ import HW_vpnManager.TrafficTrunkIterator_IHolder;
 import HW_vpnManager.TrafficTrunkList_THolder;
 import HW_vpnManager.TrafficTrunk_T;
 import HW_vpnManager.TrafficTrunk_THolder;
+import globaldefs.NameAndStringValue_T;
+import globaldefs.NamingAttributesIterator_IHolder;
+import globaldefs.NamingAttributesList_THolder;
+import globaldefs.ProcessingFailureException;
 
 public class VpnMgrHandler {
 	private static VpnMgrHandler instance;
@@ -63,7 +62,7 @@ public class VpnMgrHandler {
 		TrafficTrunkIterator_IHolder trafficTrunkIt = new TrafficTrunkIterator_IHolder();
 
 		Vector<TrafficTrunk_T> emsTrafficTrunkVector = new Vector<TrafficTrunk_T>();
-		int how_many = 500;
+		int how_many = 1000;
 		vpnMgr.getAllTrafficTrunks(fdName, connectionRateList, how_many, trafficTrunkList, trafficTrunkIt);
 
 		for (TrafficTrunk_T trafficTrunk : trafficTrunkList.value) {
@@ -110,7 +109,7 @@ public class VpnMgrHandler {
 		NamingAttributesIterator_IHolder trafficTrunkIt = new NamingAttributesIterator_IHolder();
 
 		Vector<NameAndStringValue_T[]> emsTrafficTrunkVector = new Vector<NameAndStringValue_T[]>();
-		int how_many = 500;
+		int how_many = 1000;
 		vpnMgr.getAllTrafficTrunkNames(fdName, connectionRateList, how_many, trafficTrunkList, trafficTrunkIt);
 
 		for (NameAndStringValue_T[] names : trafficTrunkList.value) {
@@ -153,7 +152,7 @@ public class VpnMgrHandler {
 		TrafficTrunkIterator_IHolder trafficTrunkIt = new TrafficTrunkIterator_IHolder();
 
 		Vector<TrafficTrunk_T> emsTrafficTrunkVector = new Vector<TrafficTrunk_T>();
-		int how_many = 500;
+		int how_many = 1000;
 		vpnMgr.getAllTrafficTrunksWithME(neName, connectionRateList, how_many, trafficTrunkList, trafficTrunkIt);
 
 		for (TrafficTrunk_T names : trafficTrunkList.value) {
@@ -196,7 +195,7 @@ public class VpnMgrHandler {
 		FDFrIterator_IHolder fdfrIt = new FDFrIterator_IHolder();
 
 		java.util.Vector fdfrsVector = new java.util.Vector();
-		int how_many = 500;
+		int how_many = 1000;
 		vpnMgr.getAllFDFrs(fdName, how_many, connectionRateList, fdfrList, fdfrIt);
 
 		for (int i = 0; i < fdfrList.value.length; i++) {
@@ -237,7 +236,7 @@ public class VpnMgrHandler {
 		IPCrossConnectionIterator_IHolder ipCCIt = new IPCrossConnectionIterator_IHolder();
 
 		java.util.Vector ipCCVector = new java.util.Vector();
-		int how_many = 500;
+		int how_many = 1000;
 		vpnMgr.getAllIPCrossConnections(managedElementName, connectionRateList, how_many, ipCCList, ipCCIt);
 
 		for (int i = 0; i < ipCCList.value.length; i++) {
